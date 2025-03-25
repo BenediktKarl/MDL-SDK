@@ -63,7 +63,7 @@ mi::neuraylib::INeuray* load_mdl_sdk(const Mdl_browser_command_line_options& opt
     mdl_configuration->clear_resource_paths();
 
     // use default paths if none are specified explicitly
-    if (options.search_paths.empty())
+    // if (options.search_paths.empty())
     {
         // add admin space search paths before user space paths
         mdl_configuration->add_mdl_system_paths();
@@ -75,7 +75,7 @@ mi::neuraylib::INeuray* load_mdl_sdk(const Mdl_browser_command_line_options& opt
         for (mi::Size i = 0, n = mdl_configuration->get_mdl_user_paths_length(); i < n; ++i)
             mdl_configuration->add_resource_path(mdl_configuration->get_mdl_user_path( i));
     }
-    else
+    // else
     {
         // add the paths specified on the command line
         for (const auto& path : options.search_paths)
