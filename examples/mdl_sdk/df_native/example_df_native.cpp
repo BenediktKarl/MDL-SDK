@@ -101,7 +101,7 @@ inline unsigned tea(unsigned N, unsigned val0, unsigned val1) {
 }
 
 // Generate random uint in [0, 2^24)
-inline unsigned lcg(unsigned& prev) {
+inline unsigned lcg(unsigned &prev) {
     const unsigned LCG_A = 1664525u;
     const unsigned LCG_C = 1013904223u;
     prev = (LCG_A * prev + LCG_C);
@@ -109,7 +109,7 @@ inline unsigned lcg(unsigned& prev) {
 }
 
 // Generate random float in [0, 1)
-inline float rnd(unsigned& prev) {
+inline float rnd(unsigned &prev) {
     const unsigned next = lcg(prev);
     return ((float) next / (float) 0x01000000);
 }
@@ -162,10 +162,10 @@ struct Window_context {
     }
 
     // GLFW keyboard callback
-    static void handle_key(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    static void handle_key(GLFWwindow *window, int key, int scancode, int action, int mods) {
         // Handle key press events
         if (action == GLFW_PRESS) {
-            Window_context* ctx = static_cast<Window_context*>(glfwGetWindowUserPointer(window));
+            Window_context *ctx = static_cast<Window_context *>(glfwGetWindowUserPointer(window));
 
             if (mods & GLFW_MOD_CONTROL) {
                 switch (key) {
@@ -227,8 +227,8 @@ struct Window_context {
     }
 
     // GLFW mouse button callback
-    static void handle_mouse_button(GLFWwindow* window, int button, int action, int mods) {
-        Window_context* ctx = static_cast<Window_context*>(glfwGetWindowUserPointer(window));
+    static void handle_mouse_button(GLFWwindow *window, int button, int action, int mods) {
+        Window_context *ctx = static_cast<Window_context *>(glfwGetWindowUserPointer(window));
         ctx->mouse_button = button + 1;
         ctx->mouse_button_action = action;
 
@@ -236,8 +236,8 @@ struct Window_context {
     }
 
     // GLFW mouse position callback
-    static void handle_mouse_pos(GLFWwindow* window, double xpos, double ypos) {
-        Window_context* ctx = static_cast<Window_context*>(glfwGetWindowUserPointer(window));
+    static void handle_mouse_pos(GLFWwindow *window, double xpos, double ypos) {
+        Window_context *ctx = static_cast<Window_context *>(glfwGetWindowUserPointer(window));
         if (ctx->moving) {
             ctx->move_dx += xpos - ctx->move_start_x;
             ctx->move_dy += ypos - ctx->move_start_y;
@@ -248,8 +248,8 @@ struct Window_context {
     }
 
     // GLFW scroll callback
-    static void handle_scroll(GLFWwindow* window, double xoffset, double yoffset) {
-        Window_context* ctx = static_cast<Window_context*>(glfwGetWindowUserPointer(window));
+    static void handle_scroll(GLFWwindow *window, double xoffset, double yoffset) {
+        Window_context *ctx = static_cast<Window_context *>(glfwGetWindowUserPointer(window));
         if (yoffset > 0.0) {
             ctx->mouse_wheel_delta = 1;
             ctx->mouse_event = true;
@@ -267,7 +267,7 @@ struct Enum_value {
     std::string name;
     int value;
 
-    Enum_value(const std::string& name, int value)
+    Enum_value(const std::string &name, int value)
         : name(name), value(value) {
     }
 };
@@ -281,7 +281,7 @@ struct Enum_type_info {
     std::vector<Enum_value> values;
 
     // Adds a enum value and its integer value to the enum type info.
-    void add(const std::string& name, int value) {
+    void add(const std::string &name, int value) {
         values.push_back(Enum_value(name, value));
     }
 };
@@ -307,15 +307,15 @@ public:
 
     Param_info(
         mi::Size index,
-        char const* name,
-        char const* display_name,
-        char const* group_name,
+        char const *name,
+        char const *display_name,
+        char const *group_name,
         Param_kind kind,
         Param_kind array_elem_kind,
         mi::Size array_size,
         mi::Size array_pitch,
-        char* data_ptr,
-        const Enum_type_info* enum_info = nullptr)
+        char *data_ptr,
+        const Enum_type_info *enum_info = nullptr)
         : m_index(index)
           , m_name(name)
           , m_display_name(display_name)
@@ -331,18 +331,18 @@ public:
 
     // Get data as T&.
     template<typename T>
-    T& data() { return *reinterpret_cast<T*>(m_data_ptr); }
+    T &data() { return *reinterpret_cast<T *>(m_data_ptr); }
 
     // Get data as const T&.
     template<typename T>
-    const T& data() const { return *reinterpret_cast<const T*>(m_data_ptr); }
+    const T &data() const { return *reinterpret_cast<const T *>(m_data_ptr); }
 
-    const std::string& name() const { return m_name; }
-    const char*& display_name() { return m_display_name; }
-    const char* display_name() const { return m_display_name; }
+    const std::string name() const { return m_name; }
+    const char *&display_name() { return m_display_name; }
+    const char *display_name() const { return m_display_name; }
 
-    const char*& group_name() { return m_group_name; }
-    const char* group_name() const { return m_group_name; }
+    const char *&group_name() { return m_group_name; }
+    const char *group_name() const { return m_group_name; }
 
     Param_kind kind() const { return m_kind; }
 
@@ -350,25 +350,25 @@ public:
     mi::Size array_size() const { return m_array_size; }
     mi::Size array_pitch() const { return m_array_pitch; }
 
-    float& range_min() { return m_range_min; }
+    float &range_min() { return m_range_min; }
     float range_min() const { return m_range_min; }
-    float& range_max() { return m_range_max; }
+    float &range_max() { return m_range_max; }
     float range_max() const { return m_range_max; }
 
-    const Enum_type_info* enum_info() const { return m_enum_info; }
+    const Enum_type_info *enum_info() const { return m_enum_info; }
 
 private:
     mi::Size m_index;
-    char const* m_name;
-    char const* m_display_name;
-    char const* m_group_name;
+    char const *m_name;
+    char const *m_display_name;
+    char const *m_group_name;
     Param_kind m_kind;
     Param_kind m_array_elem_kind;
     mi::Size m_array_size;
     mi::Size m_array_pitch; // the distance between two array elements
-    char* m_data_ptr;
+    char *m_data_ptr;
     float m_range_min, m_range_max;
-    const Enum_type_info* m_enum_info;
+    const Enum_type_info *m_enum_info;
 };
 
 // Material information structure.
@@ -379,12 +379,12 @@ public:
 
     // Add the parameter information as last entry of the corresponding group, or to the
     // end of the list, if no group name is available.
-    void add_sorted_by_group(const Param_info& info) {
+    void add_sorted_by_group(const Param_info &info) {
         bool group_found = false;
         if (info.group_name() != nullptr) {
             for (std::list<Param_info>::iterator it = params().begin(); it != params().end(); ++it) {
                 const bool same_group =
-                    it->group_name() != nullptr && strcmp(it->group_name(), info.group_name()) == 0;
+                        it->group_name() != nullptr && strcmp(it->group_name(), info.group_name()) == 0;
                 if (group_found && !same_group) {
                     m_params.insert(it, info);
                     return;
@@ -402,7 +402,7 @@ public:
     }
 
     // Lookup enum type info for a given enum type absolute MDL name.
-    const Enum_type_info* get_enum_type(const std::string name) {
+    const Enum_type_info *get_enum_type(const std::string name) {
         Enum_type_map::const_iterator it = enum_types.find(name);
         if (it != enum_types.end())
             return it->second.get();
@@ -410,13 +410,13 @@ public:
     }
 
     // Get the name of the material.
-    char const* get_name() const { return m_name.c_str(); }
+    char const *get_name() const { return m_name.c_str(); }
 
     // Set the name of the material.
-    void set_name(char const* name) { m_name = name; }
+    void set_name(char const *name) { m_name = name; }
 
     // Get the parameters of this material.
-    std::list<Param_info>& params() { return m_params; }
+    std::list<Param_info> &params() { return m_params; }
 
 private:
     // name of the material
@@ -446,7 +446,7 @@ public:
     }
 
     // Get the ID for a given string, return 0 if the string does not exist in the table.
-    unsigned get_id_for_string(const char* name) {
+    unsigned get_id_for_string(const char *name) {
         String_map::const_iterator it(m_string_constants_map.find(name));
         if (it != m_string_constants_map.end())
             return it->second;
@@ -469,7 +469,7 @@ public:
     size_t get_max_length() const { return m_max_len; }
 
     // Get the string for a given ID, or nullptr if this ID does not exist.
-    const char* get_string(unsigned id) {
+    const char *get_string(unsigned id) {
         if (id == 0 || id - 1 >= m_strings.size())
             return nullptr;
         return m_strings[id - 1].c_str();
@@ -483,7 +483,7 @@ private:
         // ignore the 0, it is the "Not-a-known-string" entry
         m_strings.reserve(target_code->get_string_constant_count());
         for (mi::Size i = 1, n = target_code->get_string_constant_count(); i < n; ++i) {
-            const char* s = target_code->get_string_constant(i);
+            const char *s = target_code->get_string_constant(i);
             size_t l = strlen(s);
             if (l > m_max_len)
                 m_max_len = l;
@@ -522,7 +522,7 @@ public:
     size_t get_max_length() const { return m_max_len; }
 
     // Get all urls.
-    std::vector<std::string> const& get_urls() const { return m_urls; }
+    std::vector<std::string> const &get_urls() const { return m_urls; }
 
 private:
     void read_resources(
@@ -533,11 +533,11 @@ private:
         switch (kind) {
             case RESOURCE_TEXTURE:
                 for (mi::Size i = 1, n = target_code->get_texture_count(); i < n; ++i) {
-                    const char* s = target_code->get_texture(i);
+                    const char *s = target_code->get_texture(i);
                     mi::base::Handle<mi::neuraylib::ITexture const> tex(
                         transaction->access<mi::neuraylib::ITexture>(s));
-                    char const* url = nullptr;
-                    if (char const* img = tex->get_image()) {
+                    char const *url = nullptr;
+                    if (char const *img = tex->get_image()) {
                         mi::base::Handle<mi::neuraylib::IImage const> image(
                             transaction->access<mi::neuraylib::IImage>(img));
                         url = image->get_filename(0, 0);
@@ -553,10 +553,10 @@ private:
                 break;
             case RESOURCE_LIGHT_PROFILE:
                 for (mi::Size i = 1, n = target_code->get_light_profile_count(); i < n; ++i) {
-                    const char* s = target_code->get_light_profile(i);
+                    const char *s = target_code->get_light_profile(i);
                     mi::base::Handle<mi::neuraylib::ILightprofile const> lp(
                         transaction->access<mi::neuraylib::ILightprofile>(s));
-                    char const* url = lp->get_filename();
+                    char const *url = lp->get_filename();
                     if (url == nullptr)
                         url = s;
                     size_t l = strlen(url);
@@ -568,10 +568,10 @@ private:
                 break;
             case RESOURCE_BSDF_MEASUREMENT:
                 for (mi::Size i = 1, n = target_code->get_bsdf_measurement_count(); i < n; ++i) {
-                    const char* s = target_code->get_bsdf_measurement(i);
+                    const char *s = target_code->get_bsdf_measurement(i);
                     mi::base::Handle<mi::neuraylib::IBsdf_measurement const> bm(
                         transaction->access<mi::neuraylib::IBsdf_measurement>(s));
-                    char const* url = bm->get_filename();
+                    char const *url = bm->get_filename();
                     if (url == nullptr)
                         url = s;
                     size_t l = strlen(url);
@@ -592,16 +592,16 @@ private:
 
 // Add a combobox for the given resource parameter to the GUI
 static bool handle_resource(
-    Param_info& param,
-    Resource_table const& res_table) {
+    Param_info &param,
+    Resource_table const &res_table) {
     bool changed = false;
-    std::vector<std::string> const& urls = res_table.get_urls();
+    std::vector<std::string> const &urls = res_table.get_urls();
     int id = param.data<int>();
     std::string cur_url = urls[id];
 
     if (ImGui::BeginCombo(param.display_name(), cur_url.c_str())) {
         for (size_t i = 0, n = urls.size(); i < n; ++i) {
-            const std::string& name = urls[i];
+            const std::string &name = urls[i];
             bool is_selected = (cur_url == name);
             if (ImGui::Selectable(name.c_str(), is_selected)) {
                 param.data<int>() = int(i);
@@ -638,7 +638,7 @@ static inline uint32_t float_as_int(float v) {
     return temp.bit;
 }
 
-inline void clamp(mi::Float32_3& d, float min = 0.f, float max = 1.f) {
+inline void clamp(mi::Float32_3 &d, float min = 0.f, float max = 1.f) {
     for (int i = 0; i < 3; ++i) {
         if (d[i] < min)
             d[i] = min;
@@ -647,15 +647,15 @@ inline void clamp(mi::Float32_3& d, float min = 0.f, float max = 1.f) {
     }
 }
 
-inline float length(const mi::Float32_3& d) {
+inline float length(const mi::Float32_3 &d) {
     return sqrtf(d.x * d.x + d.y * d.y + d.z * d.z);
 }
 
-inline float dot(const mi::Float32_3& a, const mi::Float32_3& b) {
+inline float dot(const mi::Float32_3 &a, const mi::Float32_3 &b) {
     return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
-inline mi::Float32_3 normalize(const mi::Float32_3& d) {
+inline mi::Float32_3 normalize(const mi::Float32_3 &d) {
     const float dotprod = dot(d, d);
 
     if (dotprod > 0.f) {
@@ -666,23 +666,23 @@ inline mi::Float32_3 normalize(const mi::Float32_3& d) {
     }
 }
 
-inline mi::Float32_3 operator+(const mi::Float32_3& a, const mi::Float32_3& b) {
+inline mi::Float32_3 operator+(const mi::Float32_3 &a, const mi::Float32_3 &b) {
     return mi::Float32_3(a.x + b.x, a.y + b.y, a.z + b.z);
 }
 
-inline mi::Float32_3 operator-(const mi::Float32_3& a, const mi::Float32_3& b) {
+inline mi::Float32_3 operator-(const mi::Float32_3 &a, const mi::Float32_3 &b) {
     return mi::Float32_3(a.x - b.x, a.y - b.y, a.z - b.z);
 }
 
-inline mi::Float32_3 operator*(const mi::Float32_3& a, const mi::Float32_3& b) {
+inline mi::Float32_3 operator*(const mi::Float32_3 &a, const mi::Float32_3 &b) {
     return mi::Float32_3(a.x * b.x, a.y * b.y, a.z * b.z);
 }
 
-inline mi::Float32_3 operator*(const mi::Float32_3& d, float s) {
+inline mi::Float32_3 operator*(const mi::Float32_3 &d, float s) {
     return mi::Float32_3(d.x * s, d.y * s, d.z * s);
 }
 
-inline mi::Float32_3 operator/(const mi::Float32_3& d, float s) {
+inline mi::Float32_3 operator/(const mi::Float32_3 &d, float s) {
     const float inv_s = 1.0f / s;
     return mi::Float32_3(d.x * inv_s, d.y * inv_s, d.z * inv_s);
 }
@@ -785,10 +785,10 @@ enum VP_channel {
 };
 
 struct VP_buffers {
-    mi::Float32_3* accum_buffer;
-    mi::Float32_3* albedo_buffer;
-    mi::Float32_3* normal_buffer;
-    mi::Uint32* aux_count;
+    mi::Float32_3 *accum_buffer;
+    mi::Float32_3 *albedo_buffer;
+    mi::Float32_3 *normal_buffer;
+    mi::Uint32 *aux_count;
 
     VP_buffers()
         : accum_buffer(nullptr)
@@ -837,11 +837,11 @@ struct Render_context {
         struct Alias_map {
             unsigned int alias;
             float q;
-        } * alias_map;
+        } *alias_map;
 
         float inv_integral;
         mi::Uint32_2 map_size;
-        const float* map_pixels;
+        const float *map_pixels;
     } env;
 
     // Perspective camera
@@ -904,7 +904,7 @@ struct Render_context {
         //-------------------------------------------------------------------------------------------------
         // Avoiding self intersections (see Ray Tracing Gems, Ch. 6)
         //-------------------------------------------------------------------------------------------------
-        inline void offset_ray(const mi::Float32_3& n) {
+        inline void offset_ray(const mi::Float32_3 &n) {
             const float origin = 1.0f / 32.0f;
             const float float_scale = 1.0f / 65536.0f;
             const float int_scale = 256.0f;
@@ -930,8 +930,8 @@ struct Render_context {
     mi::neuraylib::Shading_state_material_with_derivs shading_state_derivs;
     mi::base::Handle<const mi::neuraylib::ITarget_code> target_code;
     mi::base::Handle<mi::neuraylib::ITarget_argument_block> argument_block;
-    Texture_handler* tex_handler;
-    Texture_handler_deriv* tex_handler_deriv;
+    Texture_handler *tex_handler;
+    Texture_handler_deriv *tex_handler_deriv;
     mi::Size argument_block_index;
     mi::Size init_function_index;
     mi::Size surface_bsdf_function_index;
@@ -1038,7 +1038,7 @@ struct Render_context {
     }
 
     // Ray to sphere intersection
-    inline bool isect(const Ray& ray, const Sphere& sphere, Isect_info& isect_info) {
+    inline bool isect(const Ray &ray, const Sphere &sphere, Isect_info &isect_info) {
         mi::Float32_3 oc = ray.p0 - sphere.center;
         float b = 2.f * dot(oc, ray.dir);
         float c = dot(oc, oc) - sphere.radius * sphere.radius;
@@ -1094,9 +1094,9 @@ struct Render_context {
     void build_alias_map() {
         const mi::Uint32 rx = env.map_size.x;
         const mi::Uint32 ry = env.map_size.y;
-        env.alias_map = static_cast<Render_context::Environment::Alias_map*>(
+        env.alias_map = static_cast<Render_context::Environment::Alias_map *>(
             malloc(rx * ry * sizeof(Render_context::Environment::Alias_map)));
-        float* importance_data = static_cast<float*>(malloc(rx * ry * sizeof(float)));
+        float *importance_data = static_cast<float *>(malloc(rx * ry * sizeof(float)));
         float cos_theta0 = 1.0f;
         const float step_phi = 2.f * Constants.PI / static_cast<float>(rx);
         const float step_theta = Constants.PI / static_cast<float>(ry);
@@ -1110,7 +1110,8 @@ struct Render_context {
                 const unsigned int idx = y * rx + x;
                 const unsigned int idx4 = idx * 4;
                 importance_data[idx] =
-                    area * std::max(env.map_pixels[idx4], std::max(env.map_pixels[idx4 + 1], env.map_pixels[idx4 + 2]));
+                        area * std::max(env.map_pixels[idx4],
+                                        std::max(env.map_pixels[idx4 + 1], env.map_pixels[idx4 + 2]));
             }
         }
 
@@ -1125,7 +1126,7 @@ struct Render_context {
             env.alias_map[i].q = (static_cast<float>(size) * importance_data[i] / sum);
 
         // create partition table
-        unsigned int* partition_table = static_cast<unsigned int*>(
+        unsigned int *partition_table = static_cast<unsigned int *>(
             malloc(size * sizeof(unsigned int)));
         unsigned int s = 0u, large = size;
         for (unsigned int i = 0; i < size; ++i)
@@ -1146,7 +1147,7 @@ struct Render_context {
     }
 
     // evaluate the environment map for a given ray direction
-    inline mi::Float32_3 evaluate_environment(float& pdf, const mi::Float32_3& dir) {
+    inline mi::Float32_3 evaluate_environment(float &pdf, const mi::Float32_3 &dir) {
         // use environment map?
         if (env.map.is_valid_interface()) {
             const float u = atan2f(dir.z, dir.x) * (0.5f / Constants.PI) + 0.5f;
@@ -1155,7 +1156,7 @@ struct Render_context {
             size_t x = mi::math::min(static_cast<mi::Uint32>(u * env.map_size.x), env.map_size.x - 1u);
             size_t y = mi::math::min(static_cast<mi::Uint32>(v * env.map_size.y), env.map_size.y - 1u);
 
-            const float* pixel = env.map_pixels + ((y * env.map_size.x + x) * 4);
+            const float *pixel = env.map_pixels + ((y * env.map_size.x + x) * 4);
 
             pdf = std::max(pixel[0], std::max(pixel[1], pixel[2])) * env.inv_integral;
 
@@ -1167,7 +1168,7 @@ struct Render_context {
     }
 
     // importance sampling the environment map
-    mi::Float32_3 sample_environment(mi::Float32_3& light_dir, float& light_pdf, unsigned& seed) {
+    mi::Float32_3 sample_environment(mi::Float32_3 &light_dir, float &light_pdf, unsigned &seed) {
         mi::Float32_3 xi;
         xi.x = rnd(seed);
         xi.y = rnd(seed);
@@ -1176,7 +1177,7 @@ struct Render_context {
         // importance sample the environment using an alias map
         const unsigned int size = env.map_size.x * env.map_size.y;
         const unsigned int idx =
-            mi::math::min(static_cast<unsigned>(xi.x * static_cast<float>(size)), size - 1);
+                mi::math::min(static_cast<unsigned>(xi.x * static_cast<float>(size)), size - 1);
         unsigned int env_idx;
         float xi_y = xi.y;
         if (xi_y < env.alias_map[idx].q) {
@@ -1208,13 +1209,13 @@ struct Render_context {
         size_t x = mi::math::min(static_cast<mi::Uint32>(u * env.map_size.x), env.map_size.x - 1u);
         size_t y = mi::math::min(static_cast<mi::Uint32>(v * env.map_size.y), env.map_size.y - 1u);
 
-        const float* pix = env.map_pixels + ((y * env.map_size.x + x) * 4);
+        const float *pix = env.map_pixels + ((y * env.map_size.x + x) * 4);
         light_pdf = mi::math::max(pix[0], mi::math::max(pix[1], pix[2])) * env.inv_integral;
         return mi::Float32_3(pix[0], pix[1], pix[2]) * env.intensity;
     }
 
     // sample scene lights (omni + environment map)
-    mi::Float32_3 sample_lights(const mi::Float32_3& pos, mi::Float32_3& light_dir, float& light_pdf, unsigned& seed) {
+    mi::Float32_3 sample_lights(const mi::Float32_3 &pos, mi::Float32_3 &light_dir, float &light_pdf, unsigned &seed) {
         float p_select_light = 1.0f;
         if (omni_light.intensity > 0.f) {
             // keep it simple and use either point light or environment light, each with the same
@@ -1258,14 +1259,14 @@ struct Render_context {
 
 // Creates an instance of the given material.
 void create_material_instance(
-    mi::neuraylib::IMdl_factory* mdl_factory,
-    mi::neuraylib::ITransaction* transaction,
-    mi::neuraylib::IMdl_impexp_api* mdl_impexp_api,
-    mi::neuraylib::IMdl_execution_context* context,
-    const char* material_name,
-    const char* instance_name,
-    mi::base::Handle<const mi::neuraylib::IAnnotation_list>& material_parameter_annotations,
-    std::string& mdl_name) {
+    mi::neuraylib::IMdl_factory *mdl_factory,
+    mi::neuraylib::ITransaction *transaction,
+    mi::neuraylib::IMdl_impexp_api *mdl_impexp_api,
+    mi::neuraylib::IMdl_execution_context *context,
+    const char *material_name,
+    const char *instance_name,
+    mi::base::Handle<const mi::neuraylib::IAnnotation_list> &material_parameter_annotations,
+    std::string &mdl_name) {
     // split module and material name
     std::string module_name, material_simple_name;
     if (!mi::examples::mdl::parse_cmd_argument_material_name(
@@ -1287,7 +1288,7 @@ void create_material_instance(
 
     // Attach the material name
     std::string material_db_name
-        = std::string(module_db_name->get_c_str()) + "::" + material_simple_name;
+            = std::string(module_db_name->get_c_str()) + "::" + material_simple_name;
     material_db_name = mi::examples::mdl::add_missing_material_signature(
         module.get(), material_db_name);
     std::cout << "Material DB Name: " << material_db_name << std::endl;
@@ -1318,11 +1319,11 @@ void create_material_instance(
 
 // Compiles the given material instance in the given compilation modes and stores it in the DB.
 void compile_material_instance(
-    mi::neuraylib::IMdl_factory* mdl_factory,
-    mi::neuraylib::ITransaction* transaction,
-    mi::neuraylib::IMdl_execution_context* context,
-    const char* instance_name,
-    const char* compiled_material_name,
+    mi::neuraylib::IMdl_factory *mdl_factory,
+    mi::neuraylib::ITransaction *transaction,
+    mi::neuraylib::IMdl_execution_context *context,
+    const char *instance_name,
+    const char *compiled_material_name,
     bool class_compilation) {
 #ifdef ADD_EXTRA_TIMERS
     std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
@@ -1360,11 +1361,11 @@ void compile_material_instance(
 
 // Generate and execute native CPU code for a subexpression of a given compiled material.
 void generate_native(
-    Render_context& render_context,
-    mi::neuraylib::ITransaction* transaction,
-    mi::neuraylib::IMdl_backend_api* mdl_backend_api,
-    mi::neuraylib::IMdl_execution_context* context,
-    const char* compiled_material_name,
+    Render_context &render_context,
+    mi::neuraylib::ITransaction *transaction,
+    mi::neuraylib::IMdl_backend_api *mdl_backend_api,
+    mi::neuraylib::IMdl_execution_context *context,
+    const char *compiled_material_name,
     bool use_custom_tex_runtime,
     bool use_adapt_normal,
     bool enable_derivatives,
@@ -1384,7 +1385,7 @@ void generate_native(
 
     // has material a constant cutout opacity?
     render_context.cutout.is_constant =
-        compiled_material->get_cutout_opacity(&render_context.cutout.constant_opacity);
+            compiled_material->get_cutout_opacity(&render_context.cutout.constant_opacity);
 
     // has material a constant thin_walled property?
     mi::base::Handle<mi::neuraylib::IExpression const> thin_walled(
@@ -1411,14 +1412,14 @@ void generate_native(
 
         // second, we only need to generate new code if surface and backface are different
         need_backface_bsdf =
-            compiled_material->get_slot_hash(mi::neuraylib::SLOT_SURFACE_SCATTERING) !=
-            compiled_material->get_slot_hash(mi::neuraylib::SLOT_BACKFACE_SCATTERING);
+                compiled_material->get_slot_hash(mi::neuraylib::SLOT_SURFACE_SCATTERING) !=
+                compiled_material->get_slot_hash(mi::neuraylib::SLOT_BACKFACE_SCATTERING);
         need_backface_edf =
-            compiled_material->get_slot_hash(mi::neuraylib::SLOT_SURFACE_EMISSION_EDF_EMISSION) !=
-            compiled_material->get_slot_hash(mi::neuraylib::SLOT_BACKFACE_EMISSION_EDF_EMISSION);
+                compiled_material->get_slot_hash(mi::neuraylib::SLOT_SURFACE_EMISSION_EDF_EMISSION) !=
+                compiled_material->get_slot_hash(mi::neuraylib::SLOT_BACKFACE_EMISSION_EDF_EMISSION);
         need_backface_emission_intensity =
-            compiled_material->get_slot_hash(mi::neuraylib::SLOT_SURFACE_EMISSION_INTENSITY) !=
-            compiled_material->get_slot_hash(mi::neuraylib::SLOT_BACKFACE_EMISSION_INTENSITY);
+                compiled_material->get_slot_hash(mi::neuraylib::SLOT_SURFACE_EMISSION_INTENSITY) !=
+                compiled_material->get_slot_hash(mi::neuraylib::SLOT_BACKFACE_EMISSION_INTENSITY);
 
         // third, either the bsdf or the edf need to be non-default (black)
         mi::base::Handle<mi::neuraylib::IExpression const> scattering_expr(
@@ -1630,11 +1631,11 @@ void generate_native(
 
 // Collect information about the arguments of the compiled material
 void collect_material_arguments_info(
-    Material_info& mat_info,
-    Render_context& rc,
-    mi::neuraylib::ITransaction* transaction,
-    const char* compiled_material_name,
-    const mi::neuraylib::IAnnotation_list* material_parameter_annotations) {
+    Material_info &mat_info,
+    Render_context &rc,
+    mi::neuraylib::ITransaction *transaction,
+    const char *compiled_material_name,
+    const mi::neuraylib::IAnnotation_list *material_parameter_annotations) {
     // Get the compiled material and the parameter annotations
     mi::base::Handle<const mi::neuraylib::ICompiled_material> cur_mat(
         transaction->access<mi::neuraylib::ICompiled_material>(compiled_material_name));
@@ -1644,10 +1645,10 @@ void collect_material_arguments_info(
         rc.target_code->get_argument_block_layout(rc.argument_block_index));
     mi::base::Handle<mi::neuraylib::ITarget_argument_block> arg_block(
         rc.argument_block);
-    char* arg_block_data = arg_block != nullptr ? arg_block->get_data() : nullptr;
+    char *arg_block_data = arg_block != nullptr ? arg_block->get_data() : nullptr;
 
     for (mi::Size j = 0, num_params = cur_mat->get_parameter_count(); j < num_params; ++j) {
-        const char* name = cur_mat->get_parameter_name(j);
+        const char *name = cur_mat->get_parameter_name(j);
         if (name == nullptr) continue;
 
         // Determine the type of the argument
@@ -1658,7 +1659,7 @@ void collect_material_arguments_info(
         Param_info::Param_kind param_array_elem_kind = Param_info::PK_UNKNOWN;
         mi::Size param_array_size = 0;
         mi::Size param_array_pitch = 0;
-        const Enum_type_info* enum_type = nullptr;
+        const Enum_type_info *enum_type = nullptr;
 
         switch (kind) {
             case mi::neuraylib::IValue::VK_FLOAT:
@@ -1765,7 +1766,7 @@ void collect_material_arguments_info(
                     val->get_type());
 
                 // prepare info for this enum type if not seen so far
-                const Enum_type_info* info = mat_info.get_enum_type(val_type->get_symbol());
+                const Enum_type_info *info = mat_info.get_enum_type(val_type->get_symbol());
                 if (info == nullptr) {
                     std::shared_ptr<Enum_type_info> p(new Enum_type_info());
 
@@ -1822,7 +1823,7 @@ void collect_material_arguments_info(
         if (anno_block) {
             mi::neuraylib::Annotation_wrapper annos(anno_block.get());
             mi::Size anno_index =
-                annos.get_annotation_index("::anno::soft_range(float,float)");
+                    annos.get_annotation_index("::anno::soft_range(float,float)");
             if (anno_index == mi::Size(-1)) {
                 anno_index = annos.get_annotation_index("::anno::hard_range(float,float)");
             }
@@ -1846,10 +1847,10 @@ void collect_material_arguments_info(
 
 // Prepare the textures for our own texture runtime.
 bool prepare_textures(
-    std::vector<Texture>& textures,
-    mi::neuraylib::ITransaction* transaction,
-    mi::neuraylib::IImage_api* image_api,
-    const mi::neuraylib::ITarget_code* target_code) {
+    std::vector<Texture> &textures,
+    mi::neuraylib::ITransaction *transaction,
+    mi::neuraylib::IImage_api *image_api,
+    const mi::neuraylib::ITarget_code *target_code) {
     for (mi::Size i = 1 /*skip invalid texture*/; i < target_code->get_texture_count(); ++i) {
         mi::base::Handle<const mi::neuraylib::ITexture> texture(
             transaction->access<const mi::neuraylib::ITexture>(
@@ -1857,7 +1858,7 @@ bool prepare_textures(
         mi::base::Handle<const mi::neuraylib::IImage> image(
             transaction->access<mi::neuraylib::IImage>(texture->get_image()));
         mi::base::Handle<const mi::neuraylib::ICanvas> canvas(image->get_canvas(0, 0, 0));
-        char const* image_type = image->get_type(0, 0);
+        char const *image_type = image->get_type(0, 0);
 
         if (image->is_uvtile() || image->is_animated()) {
             std::cerr << "The example does not support uvtile and/or animated textures!" << std::endl;
@@ -1887,7 +1888,7 @@ bool prepare_textures(
 ///////////////////////////////////////////////////////////////////////////////
 // Trace shadow ray
 ///////////////////////////////////////////////////////////////////////////////
-bool trace_shadow(Render_context& rc, Render_context::Ray& shadow_ray, unsigned& seed) {
+bool trace_shadow(Render_context &rc, Render_context::Ray &shadow_ray, unsigned &seed) {
     Isect_info isect_info;
 
     // ray hits sphere?
@@ -1923,7 +1924,7 @@ bool trace_shadow(Render_context& rc, Render_context::Ray& shadow_ray, unsigned&
 ///////////////////////////////////////////////////////////////////////////////
 // Recursive raytracing
 ///////////////////////////////////////////////////////////////////////////////
-bool trace_ray(mi::Float32_3 vp_sample[3], Render_context& rc, Render_context::Ray& ray, unsigned& seed) {
+bool trace_ray(mi::Float32_3 vp_sample[3], Render_context &rc, Render_context::Ray &ray, unsigned &seed) {
     if (ray.level >= rc.max_ray_length)
         return false;
 
@@ -1933,8 +1934,8 @@ bool trace_ray(mi::Float32_3 vp_sample[3], Render_context& rc, Render_context::R
 
     // ray hits sphere?
     if (rc.isect(ray, rc.sphere, isect_info)) {
-        mi::neuraylib::Shading_state_material* shading_state = nullptr;
-        mi::neuraylib::Texture_handler_base* tex_handler = nullptr;
+        mi::neuraylib::Shading_state_material *shading_state = nullptr;
+        mi::neuraylib::Texture_handler_base *tex_handler = nullptr;
         mi::neuraylib::tct_float4 text_results[128];
 
         // update material shader state
@@ -1966,9 +1967,9 @@ bool trace_ray(mi::Float32_3 vp_sample[3], Render_context& rc, Render_context::R
             rc.shading_state_derivs.text_results = text_results;
 
             shading_state =
-                reinterpret_cast<mi::neuraylib::Shading_state_material*>(&rc.shading_state_derivs);
+                    reinterpret_cast<mi::neuraylib::Shading_state_material *>(&rc.shading_state_derivs);
             tex_handler =
-                reinterpret_cast<mi::neuraylib::Texture_handler_base*>(rc.tex_handler_deriv);
+                    reinterpret_cast<mi::neuraylib::Texture_handler_base *>(rc.tex_handler_deriv);
         } else {
             rc.shading_state.position = isect_info.pos;
             rc.shading_state.normal = ray.is_inside ? -isect_info.normal : isect_info.normal;
@@ -1983,10 +1984,10 @@ bool trace_ray(mi::Float32_3 vp_sample[3], Render_context& rc, Render_context::R
         }
 
         // Beware: the layout of the structs *is different*
-        mi::neuraylib::tct_float3& normal =
-            rc.use_derivatives ? rc.shading_state_derivs.normal : rc.shading_state.normal;
-        mi::neuraylib::tct_float3& geom_normal =
-            rc.use_derivatives ? rc.shading_state_derivs.geom_normal : rc.shading_state.geom_normal;
+        mi::neuraylib::tct_float3 &normal =
+                rc.use_derivatives ? rc.shading_state_derivs.normal : rc.shading_state.normal;
+        mi::neuraylib::tct_float3 &geom_normal =
+                rc.use_derivatives ? rc.shading_state_derivs.geom_normal : rc.shading_state.geom_normal;
 
         // return code to check if the code execution succeeded
         mi::Sint32 ret_code;
@@ -2235,8 +2236,8 @@ bool trace_ray(mi::Float32_3 vp_sample[3], Render_context& rc, Render_context::R
 void render_scene(
     Render_context rc,
     size_t frame_nb,
-    VP_buffers* vp_buffers,
-    unsigned char* dst,
+    VP_buffers *vp_buffers,
+    unsigned char *dst,
     size_t ymin,
     size_t ymax,
     size_t width,
@@ -2255,7 +2256,7 @@ void render_scene(
 
         for (size_t x = 0; x < width; ++x, ++vp_idx) {
             mi::Float32_3 vp_sample[3] =
-                {mi::Float32_3(0.f), mi::Float32_3(0.f), mi::Float32_3(0.f)};
+                    {mi::Float32_3(0.f), mi::Float32_3(0.f), mi::Float32_3(0.f)};
 
             float x_rnd = rnd(seed);
             float y_rnd = rnd(seed);
@@ -2297,8 +2298,9 @@ void render_scene(
                 }
             } else {
                 vp_buffers->accum_buffer[vp_idx] =
-                    (vp_buffers->accum_buffer[vp_idx] * static_cast<float>(frame_nb - 1) + vp_sample[VPCH_ILLUM]) * (
-                        1.f / frame_nb);
+                        (vp_buffers->accum_buffer[vp_idx] * static_cast<float>(frame_nb - 1) + vp_sample[VPCH_ILLUM]) *
+                        (
+                            1.f / frame_nb);
                 vp_sample[VPCH_ILLUM] = vp_buffers->accum_buffer[vp_idx];
 
                 if (ray_hit && rc.render_auxiliary) {
@@ -2335,10 +2337,10 @@ void render_scene(
 
 // Save current result image to disk
 static void save_screenshot(
-    const mi::Float32_3* image_buffer,
+    const mi::Float32_3 *image_buffer,
     const unsigned int width,
     const unsigned int height,
-    const std::string& filename,
+    const std::string &filename,
     mi::base::Handle<mi::neuraylib::IFactory> factory,
     mi::base::Handle<mi::neuraylib::IImage_api> image_api,
     mi::base::Handle<mi::neuraylib::IMdl_impexp_api> mdl_impexp_api) {
@@ -2361,43 +2363,43 @@ static void save_screenshot(
 ///////////////////////////////////////////////////////////////////////////////
 
 // Print command line usage to console and terminate the application.
-void usage(char const* prog_name) {
+void usage(char const *prog_name) {
     std::cout
-        << "Usage: " << prog_name << " [options] [<material_name>]\n"
-        << "Options:\n"
-        << "  -h|--help                  print this text and exit\n"
-        << "  -v|--version               print the MDL SDK version string and exit\n"
-        << "  --res <x> <y>              resolution (default: 1024x1024)\n"
-        << "  --hdr <filename>           environment map\n"
-        << "                             (default: nvidia/sdk_examples/resources/environment.hdr)\n"
-        << "  --nocc                     don't compile the material using class compilation\n"
-        << "  --cr                       use custom texture runtime\n"
-        << "  --allowed_scatter_mode <m> limits the allowed scatter mode to \"none\", \"reflect\", "
-        << "\"transmit\" or \"reflect_and_transmit\" (default: restriction disabled)\n"
-        << "  --an                       use adapt normal function\n"
-        << "  -d                         enable use of derivatives\n"
-        << "  --nogui                    don't open interactive display\n"
-        << "  --spp                      samples per pixel (default: 100) for output image when "
-        "nogui\n"
-        << "  -o <outputfile>            image file to write result to\n"
-        << "                             (default: example_native.png)\n"
-        << "  -oaux                      output albedo and normal auxiliary buffers\n"
-        << "  -p|--mdl_path <path>       mdl search path, can occur multiple times\n"
-        << "  --single_threaded          render on one thread only\n"
-        << " --pfloat <name> <value>     set a float parameter on the material\n"
-        << " --pcolor <name> <r> <g> <b> set a color parameter on the material"
-        << "\n"
-        << "Viewport controls:\n"
-        << "  Mouse               Camera rotation, zoom\n"
-        << "  Arrow keys, (+/-)   Omni-light rotation, intensity\n"
-        << "  CTRL + (+/-)        Environment intensity\n"
-        << "  ENTER               Screenshot\n"
-        << std::endl;
+            << "Usage: " << prog_name << " [options] [<material_name>]\n"
+            << "Options:\n"
+            << "  -h|--help                  print this text and exit\n"
+            << "  -v|--version               print the MDL SDK version string and exit\n"
+            << "  --res <x> <y>              resolution (default: 1024x1024)\n"
+            << "  --hdr <filename>           environment map\n"
+            << "                             (default: nvidia/sdk_examples/resources/environment.hdr)\n"
+            << "  --nocc                     don't compile the material using class compilation\n"
+            << "  --cr                       use custom texture runtime\n"
+            << "  --allowed_scatter_mode <m> limits the allowed scatter mode to \"none\", \"reflect\", "
+            << "\"transmit\" or \"reflect_and_transmit\" (default: restriction disabled)\n"
+            << "  --an                       use adapt normal function\n"
+            << "  -d                         enable use of derivatives\n"
+            << "  --nogui                    don't open interactive display\n"
+            << "  --spp                      samples per pixel (default: 100) for output image when "
+            "nogui\n"
+            << "  -o <outputfile>            image file to write result to\n"
+            << "                             (default: example_native.png)\n"
+            << "  -oaux                      output albedo and normal auxiliary buffers\n"
+            << "  -p|--mdl_path <path>       mdl search path, can occur multiple times\n"
+            << "  --single_threaded          render on one thread only\n"
+            << " --pfloat <name> <value>     set a float parameter on the material\n"
+            << " --pcolor <name> <r> <g> <b> set a color parameter on the material"
+            << "\n"
+            << "Viewport controls:\n"
+            << "  Mouse               Camera rotation, zoom\n"
+            << "  Arrow keys, (+/-)   Omni-light rotation, intensity\n"
+            << "  CTRL + (+/-)        Environment intensity\n"
+            << "  ENTER               Screenshot\n"
+            << std::endl;
 
     exit_failure();
 }
 
-int MAIN_UTF8(int argc, char* argv[]) {
+int MAIN_UTF8(int argc, char *argv[]) {
     // Parse command line options
     Options options;
     mi::examples::mdl::Configure_options configure_options;
@@ -2411,7 +2413,7 @@ int MAIN_UTF8(int argc, char* argv[]) {
 #define arg_get_float() (static_cast<float>(atof(argv[++i])))
 
     for (int i = 1; i < argc; ++i) {
-        char const* opt = argv[i];
+        char const *opt = argv[i];
         if (opt[0] == '-') {
             if (strcmp(opt, "--nogui") == 0) {
                 options.no_gui = true;
@@ -2449,7 +2451,7 @@ int MAIN_UTF8(int argc, char* argv[]) {
                 options.use_custom_tex_runtime = true;
             } else if (strcmp(opt, "--allowed_scatter_mode") == 0 && i < argc - 1) {
                 options.enable_bsdf_flags = true;
-                char const* mode = argv[++i];
+                char const *mode = argv[++i];
                 if (strcmp(mode, "none") == 0) {
                     options.allowed_scatter_mode = mi::neuraylib::DF_FLAGS_NONE;
                 } else if (strcmp(mode, "reflect") == 0) {
@@ -2458,7 +2460,7 @@ int MAIN_UTF8(int argc, char* argv[]) {
                     options.allowed_scatter_mode = mi::neuraylib::DF_FLAGS_ALLOW_TRANSMIT;
                 } else if (strcmp(mode, "reflect_and_transmit") == 0) {
                     options.allowed_scatter_mode =
-                        mi::neuraylib::DF_FLAGS_ALLOW_REFLECT_AND_TRANSMIT;
+                            mi::neuraylib::DF_FLAGS_ALLOW_REFLECT_AND_TRANSMIT;
                 } else {
                     std::cout << "Unknown allowed_scatter_mode: \"" << mode << "\"" << std::endl;
                     usage(argv[0]);
@@ -2586,10 +2588,10 @@ int MAIN_UTF8(int argc, char* argv[]) {
 
             // Compile the material instance in instance compilation mode
             std::string instance_compilation_name
-                = std::string("instance compilation of ") + instance_name;
+                    = std::string("instance compilation of ") + instance_name;
             // Compile the material instance
             std::string compilation_name
-                = std::string("compilation of ") + instance_name;
+                    = std::string("compilation of ") + instance_name;
             compile_material_instance(
                 mdl_factory.get(),
                 transaction.get(),
@@ -2619,29 +2621,40 @@ int MAIN_UTF8(int argc, char* argv[]) {
                 compilation_name.c_str(),
                 material_parameter_annotations.get());
 
-#define set_option_mat_params(param_map, dtype) \
-            do { for (const auto& [name, value] : param_map) { \
-            auto it = std::find_if(mat_info.params().begin(), mat_info.params().end(), \
-            [&name](const Param_info& param_info) {\
-                return param_info.name() == name;\
-            });\
-            if (it == mat_info.params().end()) { continue; } \
-            it->data<dtype>() = value; \
-            } } while(0)
-
-            set_option_mat_params(options.float_params, float);
-
-            for (const auto& [name, color_value] : options.color_params) {
+            for (const auto &[name, float_value]: options.float_params) {
                 auto it = std::find_if(mat_info.params().begin(), mat_info.params().end(),
-                                       [&name](const Param_info& param_info) {
+                                       [&name](const Param_info &param_info) {
+                                           std::cout << "checking " << param_info.name() << std::endl;
+                                           return param_info.name() == name;
+                                       });
+                if (it == mat_info.params().end()) {
+                    std::cout << name << " does exist!";
+                    continue;
+                }
+                auto &param_info = *it;
+                if (param_info.kind() != Param_info::PK_FLOAT) {
+                    continue;
+                }
+                std::cout << "Using Float parameter " << name << std::endl;
+                (&param_info.data<float>())[0] = float_value;
+            }
+
+            for (const auto &[name, color_value]: options.color_params) {
+                auto it = std::find_if(mat_info.params().begin(), mat_info.params().end(),
+                                       [&name](const Param_info &param_info) {
                                            return param_info.name() == name;
                                        });
                 if (it == mat_info.params().end()) {
                     continue;
                 }
-                (&it->data<float>())[0] = color_value.x;
-                (&it->data<float>())[1] = color_value.y;
-                (&it->data<float>())[2] = color_value.z;
+                auto &param_info = *it;
+                if (param_info.kind() != Param_info::PK_COLOR) {
+                    continue;
+                }
+                std::cout << "Using Color parameter " << name << std::endl;
+                (&param_info.data<float>())[0] = color_value.x;
+                (&param_info.data<float>())[1] = color_value.y;
+                (&param_info.data<float>())[2] = color_value.z;
             }
         }
 
@@ -2746,11 +2759,11 @@ int MAIN_UTF8(int argc, char* argv[]) {
         rc.env.map_size.y = rc.env.map->get_resolution_y();
 
         // Check, whether we need to convert the image
-        char const* image_type = image->get_type(0, 0);
+        char const *image_type = image->get_type(0, 0);
         if (strcmp(image_type, "Color") != 0 && strcmp(image_type, "Float32<4>") != 0)
             rc.env.map = image_api->convert(rc.env.map.get(), "Color");
 
-        rc.env.map_pixels = reinterpret_cast<const float*>(
+        rc.env.map_pixels = reinterpret_cast<const float *>(
             mi::base::make_handle(rc.env.map->get_tile())->get_data());
         rc.build_alias_map();
 
@@ -2832,7 +2845,7 @@ int MAIN_UTF8(int argc, char* argv[]) {
                                                              window_height, 4));
 
                         // wait for threads to finish
-                        for (auto& th : threads)
+                        for (auto &th: threads)
                             if (th.joinable())
                                 th.join();
                     }
@@ -2863,7 +2876,7 @@ int MAIN_UTF8(int argc, char* argv[]) {
             version_string = "#version 330 core"; // see top comments in 'imgui_impl_opengl3.cpp'
 
             // Create an OpenGL window and a context
-            GLFWwindow* window = glfwCreateWindow(options.res_x, options.res_y, WINDOW_TITLE, nullptr, nullptr);
+            GLFWwindow *window = glfwCreateWindow(options.res_x, options.res_y, WINDOW_TITLE, nullptr, nullptr);
             if (!window) {
                 std::cerr << "Error creating OpenGL window!" << std::endl;
                 terminate();
@@ -2900,7 +2913,7 @@ int MAIN_UTF8(int argc, char* argv[]) {
             ImGui::GetStyle().Alpha = 0.7f;
             ImGui::GetStyle().ScaleAllSizes(/*options.gui_scale*/1.f);
 
-            mi::examples::mdl::GL_display* gl_display = new mi::examples::mdl::GL_display(options.res_x, options.res_y);
+            mi::examples::mdl::GL_display *gl_display = new mi::examples::mdl::GL_display(options.res_x, options.res_y);
 
             std::chrono::duration<double> state_update_time(0.0);
             std::chrono::duration<double> render_time(0.0);
@@ -2913,7 +2926,7 @@ int MAIN_UTF8(int argc, char* argv[]) {
             // render loop
             while (true) {
                 std::chrono::time_point<std::chrono::steady_clock> t0 =
-                    std::chrono::steady_clock::now();
+                        std::chrono::steady_clock::now();
 
                 // Check for termination
                 if (glfwWindowShouldClose(window))
@@ -2992,12 +3005,12 @@ int MAIN_UTF8(int argc, char* argv[]) {
                 ImGui::Text("%s", mat_info.get_name());
 
                 bool changed = false;
-                const char* group_name = nullptr;
+                const char *group_name = nullptr;
                 int id = 0;
 
                 for (std::list<Param_info>::iterator it = mat_info.params().begin(),
-                         end = mat_info.params().end(); it != end; ++it, ++id) {
-                    Param_info& param = *it;
+                             end = mat_info.params().end(); it != end; ++it, ++id) {
+                    Param_info &param = *it;
 
                     // Ensure unique ID even for parameters with same display names
                     ImGui::PushID(id);
@@ -3055,45 +3068,45 @@ int MAIN_UTF8(int argc, char* argv[]) {
                         case Param_info::PK_ARRAY: {
                             ImGui::Text("%s", param.display_name());
                             ImGui::Indent(16.0f);
-                            char* ptr = &param.data<char>();
+                            char *ptr = &param.data<char>();
                             for (mi::Size i = 0, n = param.array_size(); i < n; ++i) {
                                 std::string idx_str = std::to_string(i);
                                 switch (param.array_elem_kind()) {
                                     case Param_info::PK_FLOAT:
                                         changed |= ImGui::SliderFloat(
                                             idx_str.c_str(),
-                                            reinterpret_cast<float*>(ptr),
+                                            reinterpret_cast<float *>(ptr),
                                             param.range_min(),
                                             param.range_max());
                                         break;
                                     case Param_info::PK_FLOAT2:
                                         changed |= ImGui::SliderFloat2(
                                             idx_str.c_str(),
-                                            reinterpret_cast<float*>(ptr),
+                                            reinterpret_cast<float *>(ptr),
                                             param.range_min(),
                                             param.range_max());
                                         break;
                                     case Param_info::PK_FLOAT3:
                                         changed |= ImGui::SliderFloat3(
                                             idx_str.c_str(),
-                                            reinterpret_cast<float*>(ptr),
+                                            reinterpret_cast<float *>(ptr),
                                             param.range_min(),
                                             param.range_max());
                                         break;
                                     case Param_info::PK_COLOR:
                                         changed |= ImGui::ColorEdit3(
                                             idx_str.c_str(),
-                                            reinterpret_cast<float*>(ptr));
+                                            reinterpret_cast<float *>(ptr));
                                         break;
                                     case Param_info::PK_BOOL:
                                         changed |= ImGui::Checkbox(
                                             param.display_name(),
-                                            reinterpret_cast<bool*>(ptr));
+                                            reinterpret_cast<bool *>(ptr));
                                         break;
                                     case Param_info::PK_INT:
                                         changed |= ImGui::SliderInt(
                                             param.display_name(),
-                                            reinterpret_cast<int*>(ptr),
+                                            reinterpret_cast<int *>(ptr),
                                             int(param.range_min()),
                                             int(param.range_max()));
                                         break;
@@ -3109,7 +3122,7 @@ int MAIN_UTF8(int argc, char* argv[]) {
                             int value = param.data<int>();
                             std::string curr_value;
 
-                            const Enum_type_info* info = param.enum_info();
+                            const Enum_type_info *info = param.enum_info();
                             for (size_t i = 0, n = info->values.size(); i < n; ++i) {
                                 if (info->values[i].value == value) {
                                     curr_value = info->values[i].name;
@@ -3119,7 +3132,7 @@ int MAIN_UTF8(int argc, char* argv[]) {
 
                             if (ImGui::BeginCombo(param.display_name(), curr_value.c_str())) {
                                 for (size_t i = 0, n = info->values.size(); i < n; ++i) {
-                                    const std::string& name = info->values[i].name;
+                                    const std::string &name = info->values[i].name;
                                     bool is_selected = (curr_value == name);
                                     if (ImGui::Selectable(info->values[i].name.c_str(), is_selected)) {
                                         param.data<int>() = info->values[i].value;
@@ -3142,7 +3155,7 @@ int MAIN_UTF8(int argc, char* argv[]) {
 
                             // fill the current value
                             unsigned curr_index = param.data<unsigned>();
-                            const char* opt = constant_table.get_string(curr_index);
+                            const char *opt = constant_table.get_string(curr_index);
                             strcpy(buf.data(), opt != nullptr ? opt : "");
 
                             if (ImGui::InputText(
@@ -3248,7 +3261,7 @@ int MAIN_UTF8(int argc, char* argv[]) {
 
                 // map the buffer, update the image data and un-map afterwards
                 // make sure this is as fast as possible
-                unsigned char* dst_image_data = gl_display->map();
+                unsigned char *dst_image_data = gl_display->map();
 
                 if (configure_options.single_threaded) {
                     render_scene(rc, frame_nb, &vp_buffers,
@@ -3267,7 +3280,7 @@ int MAIN_UTF8(int argc, char* argv[]) {
                                                       window_height, 4));
 
                     // wait for threads to finish
-                    for (auto& th : threads)
+                    for (auto &th: threads)
                         if (th.joinable())
                             th.join();
                 }
