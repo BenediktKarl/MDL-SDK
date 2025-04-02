@@ -2621,7 +2621,9 @@ int MAIN_UTF8(int argc, char *argv[]) {
                 compilation_name.c_str(),
                 material_parameter_annotations.get());
 
-            for (const auto &[name, float_value]: options.float_params) {
+            for (const auto &param: options.float_params) {
+                const auto &name = param.first;
+                const auto &float_value = param.second;
                 auto it = std::find_if(mat_info.params().begin(), mat_info.params().end(),
                                        [&name](const Param_info &param_info) {
                                            std::cout << "checking " << param_info.name() << std::endl;
@@ -2639,7 +2641,9 @@ int MAIN_UTF8(int argc, char *argv[]) {
                 (&param_info.data<float>())[0] = float_value;
             }
 
-            for (const auto &[name, color_value]: options.color_params) {
+            for (const auto &param: options.color_params) {
+                const auto &name = param.first;
+                const auto &color_value = param.second;
                 auto it = std::find_if(mat_info.params().begin(), mat_info.params().end(),
                                        [&name](const Param_info &param_info) {
                                            return param_info.name() == name;

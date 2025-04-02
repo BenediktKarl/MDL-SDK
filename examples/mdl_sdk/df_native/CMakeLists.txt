@@ -44,6 +44,11 @@ create_from_base_preset(
     EXAMPLE
 )
 
+# Wipe any earlier -std flags to avoid double-definition
+target_compile_options(${PROJECT_NAME} PRIVATE
+        "$<$<COMPILE_LANGUAGE:CXX>:-std=c++20>"
+)
+
 # add dependencies
 target_add_dependencies(TARGET ${PROJECT_NAME}
     DEPENDS

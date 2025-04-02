@@ -30,7 +30,7 @@
 set(PROJECT_NAME mdl-jit-libbsdf)
 
 # additional clang flags
-set (CLANG_FLAGS "")
+set (CLANG_FLAGS "-std=c++17")
 
 # create the project
 project(${PROJECT_NAME})
