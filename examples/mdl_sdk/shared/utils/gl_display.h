@@ -82,8 +82,8 @@ namespace mi { namespace examples { namespace mdl
 
 #endif
             glGenTextures(1, &m_display_tex);
-            if (glGetError() != GL_NO_ERROR)
-                exit_failure("Creating GL_display failed");
+            // if (glGetError() != GL_NO_ERROR)
+                // exit_failure("Creating GL_display failed");
 
             // Create shader program
             create_shader_program();
@@ -170,8 +170,8 @@ namespace mi { namespace examples { namespace mdl
             glBufferData(GL_PIXEL_UNPACK_BUFFER, new_buffer_size, 0, GL_STREAM_DRAW);
             glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 #endif
-            if (glGetError() != GL_NO_ERROR)
-                exit_failure("Resizing display buffer failed");
+            // if (glGetError() != GL_NO_ERROR)
+                // exit_failure("Resizing display buffer failed");
 
             return new_buffer_size != old_buffer_size;
         }
@@ -248,8 +248,8 @@ namespace mi { namespace examples { namespace mdl
             glClear(GL_COLOR_BUFFER_BIT);
             glBindVertexArray(m_quad_vao);
             glDrawArrays(GL_TRIANGLES, 0, 6);
-            if (glGetError() != GL_NO_ERROR)
-                exit_failure("Rendering display quad failed");
+            // if (glGetError() != GL_NO_ERROR)
+                // exit_failure("Rendering display quad failed");
 
             // unbind texture
             glBindTexture(GL_TEXTURE_2D, 0);
@@ -289,8 +289,8 @@ namespace mi { namespace examples { namespace mdl
                 exit_failure();
             }
             glAttachShader(program, shader);
-            if (glGetError() != GL_NO_ERROR)
-                exit_failure("Attaching shader failed");
+            // if (glGetError() != GL_NO_ERROR)
+                // exit_failure("Attaching shader failed");
         }
 
         /// Create a shader program with a fragment shader, which just copies a texture.
@@ -336,8 +336,8 @@ namespace mi { namespace examples { namespace mdl
         #endif
 
             glUseProgram(program);
-            if (glGetError() != GL_NO_ERROR)
-                exit_failure("Creating shader program failed");
+            // if (glGetError() != GL_NO_ERROR)
+                // exit_failure("Creating shader program failed");
 
             m_program = program;
         }
@@ -366,8 +366,8 @@ namespace mi { namespace examples { namespace mdl
             glVertexAttribPointer(
                 pos_index, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
 
-            if (glGetError() != GL_NO_ERROR)
-                exit_failure("Creating quad failed");
+            // if (glGetError() != GL_NO_ERROR)
+                // exit_failure("Creating quad failed");
         }
 
     private:

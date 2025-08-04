@@ -1992,6 +1992,18 @@ bool trace_ray(mi::Float32_3 vp_sample[3], Render_context &rc, Render_context::R
         // return code to check if the code execution succeeded
         mi::Sint32 ret_code;
 
+        const mi::Float32_3 uvw{0, 0, 0};
+        const mi::Float32_3 tan_u{1, 0, 0};
+        const mi::Float32_3 tan_v{0, 1, 0};
+        shading_state->geom_normal = {0,0,1};
+        shading_state->normal = {0,0,1};
+        shading_state->position = {0, 0, 0};
+        shading_state->text_coords = &uvw;
+        shading_state->tangent_u = &tan_u;
+        shading_state->tangent_v = &tan_v;
+        shading_state->text_results = text_results;
+
+
         // shader initialization for the current hit point
         ret_code = rc.target_code->execute_init(
             rc.init_function_index,
